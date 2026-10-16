@@ -1,0 +1,21 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}<h2>Список студентов</h2>{% endblock %}
+
+{% block content %}
+<h2>Список студентов</h2>
+<ul>
+    {% for student in students %}
+        <li>
+        {{ student.last_name }} {{ student.first_name }}
+        {% if student.group %}
+            ({{ student.group }})
+        {% else %}
+            (группа не указана)
+        {% endif %}
+        </li>
+    {% empty %}
+        <li>Студентов пока нет</li>
+    {% endfor %}
+</ul>
+{% endblock %}
