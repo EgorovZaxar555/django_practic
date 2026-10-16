@@ -1,14 +1,22 @@
-{% extends 'base.html' %}
+{% extends 'attendance/base.html' %}
 
 {% block title %}<h2>Добавление студента</h2>{% endblock %}
 
 
 {% block content %}
-<h2>Добавить студента</h2>
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Сохранить</button>
-</form>
 
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2>Добавить студента</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <button type="submit" class="btn btn-primary w-100 mt-5">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,39 @@
+body {
+  font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.card {
+  border: none;
+  border-radius: .75rem;
+}
+
+.navbar-brand img {
+  object-fit: contain;
+}
+h2{
+  margin-bottom: 20px;
+}
+label{
+  margin-bottom: 8px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  background-color: #f1f3f5;
+  border: 1px solid #ced4da;
+  border-radius: 5px
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding-left: .75rem;
+    padding-right: .75rem;
+  }
+
+  h1.display-5 {
+    font-size: 1.75rem;
+  }
+}
