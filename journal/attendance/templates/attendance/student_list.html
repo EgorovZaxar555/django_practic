@@ -1,21 +1,32 @@
-{% extends 'attendance/base.html' %}
-
-{% block title %}Список студентов{% endblock %}
+{% extends "attendance/base.html" %}
 
 {% block content %}
-<h2>Список студентов</h2>
-<ul>
-    {% for student in students %}
-        <li>
-        {{ student.last_name }} {{ student.first_name }}
-        {% if student.group %}
-            ({{ student.group }})
-        {% else %}
-            (группа не указана)
-        {% endif %}
-        </li>
-    {% empty %}
-        <li>Студентов пока нет</li>
+<h1>Список студентов</h1>
+
+{% if page_obj.object_list %}
+<ul class="list-group mb-3">
+    {% for student in page_obj.object_list %}
+    <li class="list-group-item">{{ student.last_name }} {{ student.first_name }}</li>
     {% endfor %}
 </ul>
+{% else %}
+<p>Студенты не найдены.</p>
+{% endif %}
+
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="pagination d-flex align-items-center gap-2">
+    {% if page_obj.has_previous %}
+    <a class="btn btn-outline-secondary btn-sm" href="?page=1">« первая</a>
+    <a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.previous_page_number }}">‹ предыдущая</a>
+    {% endif %}
+
+    <span class="mx-2">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+    <a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.next_page_number }}">следующая ›</a>
+    <a class="btn btn-outline-secondary btn-sm" href="?page={{ page_obj.paginator.num_pages }}">последняя »</a>
+    {% endif %}
+</div>
+{% endif %} 
+
 {% endblock %}

@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseForbidden
 from .models import Student
 from .forms import StudentModelForm, StudentAvatarForm
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 
@@ -21,13 +22,27 @@ def student_detail(request, id):
     return render(request, 'attendance/student_detail.html', {'student': student})
 
 
+
+
+
+
+
 @login_required
 def student_list(request):
     if not request.user.is_teacher:
-        return render(request, 'attendance/no_access.html', {'title': f'y вас нет доступа'}, )
-    students = Student.objects.all()
-    return render(request, "attendance/student_list.html", {"students": students})
+        return render(request, 'attendance/no_access.html', {'title': 'У вас нет доступа'})
+    student_qs = Student.objects.all().order_by('last_name')
+    paginator = Paginator(student_qs, 2) 
 
+    page_number = request.GET.get('page')
+    try:
+        page_obj = paginator.page(page_number)
+    except PageNotAnInteger:
+        page_obj = paginator.page(1)
+    except EmptyPage:
+        page_obj = paginator.page(paginator.num_pages)
+        
+    return render(request, 'attendance/student_list.html', {'page_obj': page_obj})
 
 @login_required
 def profile_dispatch(request):
