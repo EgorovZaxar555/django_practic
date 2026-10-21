@@ -1,24 +1,35 @@
 from django import forms
+from django.core.validators import FileExtensionValidator
 from .models import Student
-from django.forms import ModelForm, TextInput
 
+MAX_MB = 5
+
+def validate_filesize(file):
+    if file.size > MAX_MB * 1024 * 1024:
+        raise forms.ValidationError(f"Размер файла не должен превышать {MAX_MB} МБ")
+
+
+class StudentAvatarForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ["avatar"]
+        widgets = {
+            "avatar": forms.ClearableFileInput(attrs={"accept": "image/*"})
+        }
+        help_texts = {"avatar": "Загрузите изображение (JPEG/PNG), до 5 МБ"}
+
+    avatar = forms.ImageField(
+        validators=[
+            FileExtensionValidator(allowed_extensions=["jpg", "jpeg", "png"]),
+            validate_filesize
+        ],
+        label="Аватар"
+    )
 
 class StudentModelForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ['last_name', 'first_name', 'group']
-        # widgets: {
-        #     "title": TextInput(attrs={
-        #         'class': 'form-control'
-        #     }),
-        #     "first_name": TextInput(attrs={
-        #         'class': 'form-control'
-        #     }),
-        #     "group": TextInput(attrs={
-        #         'class': 'form-control'
-        #     }),         
-        # }
-        
 
 
 class StudentForm(forms.Form):
